@@ -20,8 +20,8 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Earnings (Monthly)</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                Count Product</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $productcount }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -107,7 +107,7 @@
                 <!-- Card Header - Dropdown -->
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Category Overview</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -126,7 +126,7 @@
                 <!-- Card Body -->
                 <div class="card-body">
                     <div class="chart-area">
-                        <canvas id="myAreaChart"></canvas>
+                        <canvas id="productChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -329,6 +329,38 @@
     </div>
 
 </div>
+@endsection
+
+
+@section('script')
+@php
+    $categoryLabels = $categories->pluck('category');
+    $categoryCounts = $categories->pluck('total');
+@endphp
+
+<script>
+    const categoryLabels = @json($categoryLabels);
+    const categoryCounts = @json($categoryCounts);
+</script>
+
+<script>
+    const aaa = document.getElementById('productChart').getContext('2d');
+    new Chart(aaa, {
+        type: 'bar',
+        data: {
+            labels: categoryLabels,
+            datasets: [{
+                label: 'Total Products per Category',
+                data: categoryCounts,
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'],
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
 @endsection
 
 
